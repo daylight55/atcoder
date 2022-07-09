@@ -1,16 +1,23 @@
 #!/usr/bin/env ruby
 
-# input = gets.split(" ").map(&:to_i)
-N, M, X, T, D = "1 0 1 3 2".split(" ").map(&:to_i)
+N, M, X, T, D = gets.split(" ").map(&:to_i)
 tall = 1
 
-if X < M
-  for i in 1..X do
+if M == 0
+  if M < N
+    tall = T - D * (X - M)
+  end
+elsif X < M
+  for _i in 1..X do
     tall = T
   end
 else
-  for i in 1..X do
-    tall += D
+  if M < N
+    tall = T - D * (X - M)
+  else
+    for _i in 1..X do
+      tall += D
+    end
   end
 end
 
