@@ -8,16 +8,15 @@ sum = A.zip(B).map {|a, b| a + b}
 results = (1..N).to_a.zip(A, B, sum)
 ans = []
 
-def pass_ans(results, index, num )
-  if num <= 0
-    return []
-  else
-    results.sort_by!{ |x| [x[index], -x[0]] }.slice!(-num..-1).map{|x| x[0]}
-  end
+def pass_candidates(results, index, num )
+  return num <= 0 ? [] : results.sort_by!{ |x| [x[index], -x[0]] }.slice!(-num..-1).map{|x| x[0]}
 end
 
-ans.push(pass_ans(results, 1, X))
-ans.push(pass_ans(results, 2, Y))
-ans.push(pass_ans(results, 3, Z))
+# Math
+ans.push(pass_candidates(results, 1, X))
+# English
+ans.push(pass_candidates(results, 2, Y))
+# Math + English
+ans.push(pass_candidates(results, 3, Z))
 
 puts ans.flatten.sort
