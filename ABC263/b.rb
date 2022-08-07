@@ -13,7 +13,6 @@ count = 1
 
 parent, child = genealogy.reverse!.pop
 # Nに行き着くまでループする
-# puts "#{parent} #{child}"
 while parent != 1
   parent = genealogy.select { |p, c| c == parent }.first[0]
   count += 1
