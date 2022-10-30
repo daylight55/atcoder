@@ -3,10 +3,9 @@
 H, W = gets.chomp.split.map(&:to_i)
 C = []
 
-
 H.times {
-  r = gets.chomp.chars
-  C.append(r)
+  row = gets.chomp.chars
+  C.append(row)
 }
 
 cnt = 0
