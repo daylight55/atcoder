@@ -1,23 +1,36 @@
 H, W = gets.chomp.split.map(&:to_i)
 
-S = Array.new(H)
-T = Array.new(H)
-H.times { |i| S[i] = gets.chomp.chars}
-H.times { |i| T[i] = gets.chomp.chars}
+S = Array.new(H){ gets.chomp.chars }
+T = Array.new(H){ gets.chomp.chars }
 
 judge = Array.new(W, false)
 
-s_columns = Array.new(W)
-t_columns = Array.new(W)
+s_columns = S.transpose.sort
+t_columns = T.transpose.sort
 
-(0..W).each { |w|
-  s_columns[w] = S.transpose[w]
-  t_columns[w] = T.transpose[w]
+# s_columns.each_with_index { |s_col, i|
+#   t_columns.each_with_index { |t_col, j|
+#     if s_col == t_col
+#       judge[i] = true
+#       s_columns.delete_at(i)
+#       t_columns.delete_at(j)
+
+#       # pp s_columns
+#       # pp t_columns
+#       break
+#     end
+#   }
+#   break if !judge[i]
+
+#   # judge[i] = t_columns.any? { |t_col| t_col == s_col }
+# }
+
+W.times {
+  next if s_columns.shift == t_columns.shift
+  puts "No"
+  return
 }
+puts "Yes"
 
-(0..W).each { |w|
-  judge[w] = t_columns.any? { |t_col| t_col == s_columns[w] }
-}
-
-result = judge.all? {|x| x == true} ? "Yes" : "No"
-puts result
+# result = judge.all? {|x| x == true} ? "Yes" : "No"
+# puts result
