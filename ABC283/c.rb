@@ -9,6 +9,7 @@ S.length.times{ |i|
   # 連続した00の場合飛ばす
   if oo_flg
     oo_flg = !oo_flg
+    # カウントせずスキップ
     next
   end
 
@@ -17,11 +18,9 @@ S.length.times{ |i|
     if S[i + 1] == "0"
       count = count + 1
       oo_flg = true
-      next
     else
       count = count + 1
     end
-
   else
     count = count + 1
   end
