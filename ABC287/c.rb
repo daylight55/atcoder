@@ -6,28 +6,31 @@ m.times do
   graph[v - 1] << u - 1
 end
 
-# 幅優先探索
-dist = Array.new(n, -1)
-queue = [0]
+# 繋がっていない点がある場合はパスグラフではない
+# if graph.flatten.uniq.size != n
+#   puts "No"
+#   exit
+# end
+
+# 深さ優先探索
+dist = Array.new(n, false)
+stack = [0]
 dist[0] = true
 
-while queue.size > 0
-  pos = queue.shift
+while stack.size > 0
+  pos = stack.pop
   graph[pos].each do |to|
-    # 未訪問の時は探索先のキューに加え、訪問済みとする
-    queue << to
-    dist[to] = true
+    # 未訪問の時は探索先のスタックに加え、訪問済みとする
+    if !dist[to]
+      stack << to
+      dist[to] = true
+    end
   end
 end
 
 # 全て訪問できる場合はパスグラフ
-if dist.include?(-1)
+if dist.include?(false)
   puts "No"
 else
-  # 閉路の場合は1以上の訪問が存在するため、その場合はNo
-  if dist.any?{|i| i > 0}
-    puts "No"
-  else
-    puts "Yes"
-  end
+  puts "Yes"
 end
