@@ -1,40 +1,46 @@
+require 'set'
+
 n, m = gets.split.map(&:to_i)
-graph = Array.new(n) {[]}
+graph = Array.new(n) { [] }
 m.times do
   u, v = gets.split.map(&:to_i)
-  graph[u - 1] << v - 1
-  graph[v - 1] << u - 1
+  u -= 1
+  v -= 1
+  graph[u] << v
+  graph[v] << u
 end
 
-# 繋がっていない点がある場合はパスグラフではない
-# if graph.flatten.uniq.size != n
-#   puts "No"
-#   exit
-# end
+if m != n - 1
+  puts "No"
+  return
+end
 
-# 深さ優先探索
-dist = Array.new(n, false)
-stack = [0]
-dist[0] = true
+graph.each do |arr|
+  if arr.size > 2
+    puts "No"
+    return
+  end
+end
 
-while stack.size > 0
-  pos = stack.pop
-  graph[pos].each do |to|
-    # 未訪問の時は探索先のスタックに加え、訪問済みとする
-    if !dist[to]
-      stack << to
-      dist[to] = true
-    else
-      puts "No"
-      exit
+reach = Array.new(n) { false }
+que = Queue.new
+reach[0] = true
+que.push(0)
+while !que.empty?
+  u = que.pop
+  graph[u].each do |v|
+    if !reach[v]
+      reach[v] = true
+      que.push(v)
     end
   end
 end
 
+reach.each do |val|
+  if !val
+    puts "No"
+    return
+  end
+end
+
 puts "Yes"
-# 全て訪問できる場合はパスグラフ
-# if dist.include?(false)
-#   puts "No"
-# else
-#   puts "Yes"
-# end
