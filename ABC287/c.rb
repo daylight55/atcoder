@@ -7,32 +7,27 @@ m.times do
 end
 
 # 幅優先探索
-dist = Array.new(n, false)
+dist = Array.new(n, -1)
 queue = [0]
 dist[0] = true
 
 while queue.size > 0
   pos = queue.shift
   graph[pos].each do |to|
-    # 閉路の入力の時常に訪問済みの経路に再度当たるためNoを出力し終了
-    # pp "to: #{to}"
-    if dist[to]
-      puts "No"
-      exit
     # 未訪問の時は探索先のキューに加え、訪問済みとする
-    else
-      next if dist[to]
-      queue << to
-      dist[to] = true
-      # pp "queue: #{queue}"
-      # pp "dist: #{dist}"
-    end
+    queue << to
+    dist[to] = true
   end
 end
 
 # 全て訪問できる場合はパスグラフ
-if dist.include?(false)
+if dist.include?(-1)
   puts "No"
 else
-  puts "Yes"
+  # 閉路の場合は1以上の訪問が存在するため、その場合はNo
+  if dist.any?{|i| i > 0}
+    puts "No"
+  else
+    puts "Yes"
+  end
 end
