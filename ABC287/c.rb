@@ -24,13 +24,17 @@ while stack.size > 0
     if !dist[to]
       stack << to
       dist[to] = true
+    else
+      puts "No"
+      exit
     end
   end
 end
 
+puts "Yes"
 # 全て訪問できる場合はパスグラフ
-if dist.include?(false)
-  puts "No"
-else
-  puts "Yes"
-end
+# if dist.include?(false)
+#   puts "No"
+# else
+#   puts "Yes"
+# end
