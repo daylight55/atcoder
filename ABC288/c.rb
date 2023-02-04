@@ -1,4 +1,4 @@
-#---------------------------------------
+# ref. https://qiita.com/k_karen/items/5349a25c3eb7b4697f58
 class UnionFind
   def initialize(size)
     @rank = Array.new(size, 0)
@@ -35,10 +35,18 @@ end
 N, M = gets.chomp.split.map(&:to_i)
 
 union = UnionFind.new(N)
+loop_num = 0
+
 M.times do
-  union.unite(*gets.chomp.split.map{|g| g.to_i - 1})
+  u, v = gets.chomp.split.map{|g| g.to_i - 1}
+
+  # 同じ親を持つ、閉路を作ってしまう場合は閉路の数として加算
+  if union.same_parent?(u, v)
+    loop_num += 1
+  else
+    union.unite(u, v)
+  end
 end
 
-# 閉路が見つかれば閉路ごとに必ず1つ削除する
-# 閉路の数と同じ
-p union.size
+# 閉路が見つかれば閉路ごとに必ず1つ削除するため、答えは閉路の数
+p loop_num
