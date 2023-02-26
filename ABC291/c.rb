@@ -1,11 +1,10 @@
 N = gets.chomp.to_i
 S = gets.chomp.chars
 
-# SはRLUDの文字列がN個入っている
-# N回の移動の間に(0, 0)から移動する高橋くんが一度でも同じ座標にいたことがあるかを判定する
-def judge(s)
+def solve(s)
   x = 0
   y = 0
+  # ハッシュマップで座標をキーに使用
   visit = Hash.new(0)
   visit[[x, y]] += 1
 
@@ -21,9 +20,10 @@ def judge(s)
       y -= 1
     end
     visit[[x, y]] += 1
+    # 2回訪問
     return 'Yes' if visit[[x, y]] > 1
   end
   'No'
 end
 
-puts judge(S)
+puts solve(S)
