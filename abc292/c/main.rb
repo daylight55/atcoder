@@ -22,7 +22,7 @@ prime = Prime.instance
 n = gets.chomp.to_i
 count = 0
 
-(1..n-1).each{ |i|
+(1..Math.sqrt(n)).each{ |i|
   # ABとCDの組み合わせは対応するから半分だけ求めたら倍にすればいい。
   # Nを表現できる和の組み合わせを考える
   # その後、各数字を素因数分解し、その素因数の組み合わせを考える
@@ -30,8 +30,8 @@ count = 0
   # まずABを決める
   ab = i
   # abの約数の数を求める
-  # ab_divisor_size = prime.each_divisor(i).size
-  # puts "i:#{i} ab_factors:#{ab_divisor_size}"
+  ab_divisor_size = prime.each_divisor(ab).size
+  puts "i:#{i} ab_factors:#{ab_divisor_size}"
 
   # それぞれの数を求める
   cd = n - i
@@ -62,12 +62,16 @@ count = 0
   }
 
   # cdの約数の数を求める
-  # cd_divisor_size = prime.each_divisor(cd).size
-  # puts "i:#{i} cd_factors:#{cd_divisor_size}"
+  cd_divisor_size = prime.each_divisor(cd).size
+  puts "i:#{i} cd_factors:#{cd_divisor_size}"
 
   # 個数を掛け算する
-  # count += ab_divisor_size * cd_divisor_size
+  if i * i == n
+    count += 2
+  else
+    count += ab_divisor_size * cd_divisor_size
+  end
   # puts "count #{count}"
 }
 
-puts count
+puts count * 2
