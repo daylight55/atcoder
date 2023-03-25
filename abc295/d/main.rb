@@ -1,2 +1,3 @@
 #!/usr/bin/env ruby
-input = gets.chomp.split
+N, Q = gets.chomp.split.map(&:to_i)
+events = Array.new(Q){ gets.chomp.split.map(&:to_i) }
