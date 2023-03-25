@@ -13,60 +13,31 @@ grid.each_with_index { |row, i|
 
 # pp bomb_dict
 
-bomb_dict.each { |(i, j), bomb|
+bomb_dict.each { |(i, j), b|
   # 爆弾自身も空き地にする
   grid[i][j] = '.'
   # 爆弾の数値だけ爆発させセルを空き地にする
-  (1..bomb).each { |bomb_effect|
-    puts "bomb_effect:#{bomb_effect}"
-    # 上
-    if i - bomb_effect >= 0
-      grid[i - bomb_effect][j] = '.'
-      # puts "上 bomb! i:#{i} bomb_effect:#{bomb_effect} #{i - bomb_effect}, #{j}"
-    end
-    # 下
-    if i + bomb_effect < R
-      grid[i + bomb_effect][j] = '.'
-      # puts "下 bomb! i:#{i} bomb_effect:#{bomb_effect} #{i + bomb_effect}, #{j}"
-    end
-    # 左
-    if j - bomb_effect >= 0
-      grid[i][j - bomb_effect] = '.'
-      # puts "左 bomb! j:#{j} bomb_effect:#{bomb_effect} #{i}, #{j - bomb_effect}"
-    end
-    # 右
-    if j + bomb_effect < C
-      grid[i][j + bomb_effect] = '.'
-      # puts "右 bomb! j:#{j} bomb_effect:#{bomb_effect} #{i}, #{j + bomb_effect}"
-    end
-    # 斜め右上
-    if i - bomb_effect >= 0 && j + bomb_effect < C
-      grid[i - bomb_effect][j + bomb_effect] = '.'
-    end
-    # 斜め左上
-    if i - bomb_effect >= 0 && j - bomb_effect >= 0
-      grid[i - bomb_effect][j - bomb_effect] = '.'
-    end
-    # 斜め右下
-    if i + bomb_effect < R && j + bomb_effect < C
-      grid[i + bomb_effect][j + bomb_effect] = '.'
-    end
-    # 斜め左下
-    if i + bomb_effect < R && j - bomb_effect >= 0
-      grid[i + bomb_effect][j - bomb_effect] = '.'
+  bomb_effects = []
+  # セル境界内の爆発範囲を計算する
+  bomb_up = i - b < 0 ? 0 : i - b
+  bomb_down = i + b >= R ? R - 1 : i + b
+  bomb_left = j - b < 0 ? 0 : j - b
+  bomb_right = j + b >= C ? C - 1 : j + b
+
+  (bomb_up..bomb_down).each { |i_bomb_effect|
+    (bomb_left..bomb_right).each { |j_bomb_effect|
+      if (i_bomb_effect - i).abs + (j_bomb_effect - j).abs <= b
+        bomb_effects << [i_bomb_effect, j_bomb_effect]
+        # pp bomb_effects
+      end
+    }
+  }
+
+  bomb_effects.each { |(i, j)|
+    if grid[i][j] == '#'
+      grid[i][j] = '.'
     end
   }
 }
 
-# マンハッタン距離がn以下の座標を返す
-def manhattan_distance(n)
-  result = []
-  (-n..n).each { |i|
-    (-n..n).each { |j|
-      if i.abs + j.abs <= n
-        result << [i, j]
-      end
-    }
-  }
-  result
-end
+puts grid.map { |row| row.join('') }
