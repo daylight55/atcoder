@@ -49,8 +49,5 @@ centers.each do |center|
   }
 end
 
-s.shift
-s.shift
-s << 0
-s << 0
+s.rotate!(2)
 puts s.join(" ")
