@@ -19,6 +19,17 @@ grouping.each do |group|
       if n*Y > Z+X*n
         capslock = true
         sum += Z+X*n
+      # 同じ場合はその2つ先のグループがCapsLockを押した方が早いかどうかを判断する
+      elsif n*Y == Z+X*n
+        next_length = grouping[grouping.index(group)+1].length
+        # 1つ先のグループ(小文字)がCapsLockを押した方が早い場合
+        if next_length*Y > Z+X*next_length
+          capslock = true
+          sum += Z+X*n
+        # 2つ先のグループがそのままが早い場合
+        else
+          sum += n*Y
+        end
       # そのままが早い場合
       else
         sum += n*Y
@@ -40,11 +51,24 @@ grouping.each do |group|
       if n*Y > Z+X*n
         capslock = false
         sum += Z+X*n
+      # 同じ場合はその2つ先のグループがCapsLockを押した方が早いかどうかを判断する
+      elsif n*Y == Z+X*n
+        next_length = grouping[grouping.index(group)+1].length
+        # 2つ先のグループがCapsLockを押した方が早い場合
+        if next_length*Y > Z+X*next_length
+          capslock = false
+          sum += Z+X*n
+        # 2つ先のグループがそのままが早い場合
+        else
+          sum += n*Y
+        end
       else
         sum += n*Y
       end
     end
   end
+
+  # pp "capslock: #{capslock} sum: #{sum} n: #{n}"
 end
 
 puts sum
