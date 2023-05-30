@@ -2,73 +2,27 @@
 X, Y, Z = gets.chomp.split.map(&:to_i)
 S = gets.chomp.chars
 
-capslock = false
-sum = 0
-# 連続する文字をグループ化する
-grouping = S.slice_when { |a, b| a != b }.to_a
-# pp grouping
+# dp[i][0]: 手前の文字を入力してCapslockがOFFの状態になっているときの最小コスト
+# dp[i][1]: 手前の文字を入力してCapslockがONの状態になっているときの最小コスト
+dp = Array.new(S.size + 1){ Array.new(2, Float::INFINITY ) }
+# 初期状態はOFF
+dp[0][0] = 0
 
-grouping.each do |group|
-  n = group.length
-  # NOTE: CapsLockの判断は次のグループの文字によっても決まる？
-  # Aの場合
-  if group[0] == 'A'
-    # CapsLockがOFFの場合
-    if capslock == false
-      # Capslockを押した方が早い場合
-      if n*Y > Z+X*n
-        capslock = true
-        sum += Z+X*n
-      # 同じ場合はその2つ先のグループがCapsLockを押した方が早いかどうかを判断する
-      elsif n*Y == Z+X*n
-        next_length = grouping[grouping.index(group)+1].length
-        # 1つ先のグループ(小文字)がCapsLockを押した方が早い場合
-        if next_length*Y > Z+X*next_length
-          capslock = true
-          sum += Z+X*n
-        # 2つ先のグループがそのままが早い場合
-        else
-          sum += n*Y
-        end
-      # そのままが早い場合
-      else
-        sum += n*Y
-      end
-    # CapsLockがONの場合
-    else
-      # 順当にaを押せばいい
-      sum += n*X
-    end
-  # aの場合
+S.size.times do |i|
+  # Capslockを押して入れ替える。常に最小コストを保つため、逆の状態に対して押さない方が小さいならそれも維持。
+  dp[i][0] = [dp[i][0], dp[i][1] + Z].min
+  dp[i][1] = [dp[i][1], dp[i][0] + Z].min
+
+  # 大文字入力
+  if S[i] == 'a'
+    dp[i + 1][0] = [dp[i + 1][0], dp[i][0] + X].min # CapslockがOFFの場合
+    dp[i + 1][1] = [dp[i + 1][1], dp[i][1] + Y].min # CapslockがONの場合
+  # 小文字入力
   else
-    # CapsLockがOFFの場合
-    if capslock == false
-      # 順当にaを押せばいい
-      sum += n*X
-    # CapsLockがONの場合
-    else
-      # Capslockを押した方が早い場合
-      if n*Y > Z+X*n
-        capslock = false
-        sum += Z+X*n
-      # 同じ場合はその2つ先のグループがCapsLockを押した方が早いかどうかを判断する
-      elsif n*Y == Z+X*n
-        next_length = grouping[grouping.index(group)+1].length
-        # 2つ先のグループがCapsLockを押した方が早い場合
-        if next_length*Y > Z+X*next_length
-          capslock = false
-          sum += Z+X*n
-        # 2つ先のグループがそのままが早い場合
-        else
-          sum += n*Y
-        end
-      else
-        sum += n*Y
-      end
-    end
+    dp[i + 1][0] = [dp[i + 1][0], dp[i][0] + Y].min # CapslockがOFFの場合
+    dp[i + 1][1] = [dp[i + 1][1], dp[i][1] + X].min # CapslockがONの場合
   end
-
-  # pp "capslock: #{capslock} sum: #{sum} n: #{n}"
 end
 
-puts sum
+# 最終結果が低い方を出力
+puts [dp[S.size][0], dp[S.size][1]].min
