@@ -1,23 +1,26 @@
 #!/usr/bin/env ruby
 P, Q = gets.chomp.split
 
-distances = [0, 3, 1, 4, 1, 5, 9, 0]
+distances = {
+  "AB" => 3,
+  "BC" => 1,
+  "CD" => 4,
+  "DE" => 1,
+  "EF" => 5,
+  "FG" => 9
+}
 
-# Aが0, Gが7になるように変換する
-p_num = P.ord - 'A'.ord
-q_num = Q.ord - 'A'.ord
-
-# p_numとq_numの大きさが逆の場合は入れ替える
-if p_num > q_num
-  tmp = p_num
-  p_num = q_num
-  q_num = tmp
+if P > Q
+  tmp = P
+  P = Q
+  Q = tmp
 end
 
-puts "p_num: #{p_num} q_num: #{q_num}"
-
-# distanceのp_numとq_numの間にある数の合計を求める
 sum = 0
-(p_num..q_num).each do |i|
-  sum += distances[i]
+(P...Q).each do |alphabet|
+  # puts "alphabet: #{alphabet}"
+  # puts "alphabet.next: #{alphabet.next}"
+  sum += distances[alphabet + (alphabet.next)]
 end
+
+puts sum
