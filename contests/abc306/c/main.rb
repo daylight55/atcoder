@@ -2,23 +2,12 @@
 N = gets.chomp.to_i
 A = gets.chomp.split.map(&:to_i)
 
-ans = []
-pushed = []
-first = -1
-(1..N).each_with_index do |x, i|
+ans = {}
 
-  if first == x
-    ans << i
-    pushed << x
-    first = -1
-    next
-  end
-
-  puts "first: #{first}, x: #{x} i: #{i} ans: #{ans} pushed: #{pushed}"
-
-  # break if pushed.all? { |p| N.include?(p) }
-
-  first = x
+A.each_with_index do |a, i|
+  ans[a] << i + 1
 end
 
-puts ans.join(" ")
+(1..N).each do |n|
+  puts ans[n][1].join(' ')
+end
