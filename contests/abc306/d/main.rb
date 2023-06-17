@@ -1,34 +1,22 @@
 #!/usr/bin/env ruby
-def max_deliciousness(n, menu)
-  max_sum = 0
+N = gets.chomp.to_i
+MENU = Array.new(N) { gets.chomp.split.map(&:to_i) }
 
-  (1..(2**n - 1)).each do |mask|
-    sum = 0
+# 高橋君のお腹の状態を個別にもつ
+# dp[i][0]: お腹を壊している時の美味しさの最大値
+# dp[i][1]: お腹を壊していない時の美味しさの最大値
+dp = Array.new(N) { Array.new(2, Float::INFINITY) }
+
+# 高橋君はメニューを食べるか食べないかを選べる
+# yが美味しさで、美味しさの合計を最大化したい
+MENU.each.with_index do |(x, y), i|
+  # x = 0: 毒入りでこの時お腹を壊す。またすでにお腹を壊している場合は死ぬ。
+  # x = 1: 解毒剤入りでことの時お腹を壊していた場合は治る。お腹を壊していない場合は何も起こらない。
+  stomachache = false
+
+  if x == 0
+    stomachache = true
+    dp[i][0] = [dp[i][0], y].max
+  elsif x == 1 && dp[i][0] == Float::INFINITY
     stomachache = false
-
-    (0...n).each do |i|
-      xi, yi = menu[i]
-
-      if (mask & (1 << i)) > 0
-        if xi == 0 && !stomachache
-          sum += yi
-        elsif xi == 1
-          stomachache = true
-          break
-        end
-      end
-    end
-
-    max_sum = [max_sum, sum].max unless stomachache
   end
-
-  return max_sum
-end
-
-# 以下は実行例です
-
-n = gets.chomp.to_i
-menu = Array.new(n) { gets.chomp.split.map(&:to_i) }
-
-result = max_deliciousness(n, menu)
-puts result
