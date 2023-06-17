@@ -2,12 +2,14 @@
 N = gets.chomp.to_i
 A = gets.chomp.split.map(&:to_i)
 
-ans = {}
+ans = Hash.new { |h, k| h[k] = [] }
 
 A.each_with_index do |a, i|
   ans[a] << i + 1
 end
 
-(1..N).each do |n|
-  puts ans[n][1].join(' ')
-end
+# pp ans
+
+result = (1..N).sort_by { |i| ans[i][1] }
+
+puts result.join(' ')
