@@ -20,18 +20,22 @@ while !queue.empty?
     exit
   end
 
-  next if y == H - 1 && x == W - 1
+  next if i == H - 1 && j == W - 1
   # 上下左右の隣接するマスを探索
-  [[y - 1, x], [y + 1, x], [y , x - 1], [y, x + 1]].each do |ny, nx|
+  [[i - 1, j], [i + 1, j], [i , j - 1], [i, j + 1]].each do |ny, nx|
     # グリッドの範囲外や壁の場合は探索しない
     next if ny < 0 || ny >= H || nx < 0 || nx >= W
     # 探索済みの場合は探索しない
     next if visited[ny][nx]
 
     next_index = (index % 5) + 1
-    next_keyword = keyword[next_index]
+    next_keyword = keyword[next_index - 1]
     queue.push([ny, nx, next_index]) if S[ny][nx] == next_keyword
   end
+
+  # pp queue
+  # puts '---'
+  # pp visited
 end
 
 # ゴールに到達しない場合はNoを出力して終了
