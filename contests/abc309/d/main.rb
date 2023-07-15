@@ -1,2 +1,3 @@
 #!/usr/bin/env ruby
-input = gets.chomp.split
+N_1, N_2, M = gets.chomp.split.map(&:to_i)
+graph = Array.new(M) { gets.chomp.split.map(&:to_i) }
