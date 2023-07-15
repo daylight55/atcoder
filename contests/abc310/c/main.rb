@@ -1,0 +1,1 @@
+/Users/tanimura/dev/atcoder/acc_templates/ruby/main.rb
