@@ -3,38 +3,33 @@ def main
   n = gets.chomp.to_i
   a = gets.chomp.split.map(&:to_i)
 
-  graph = Array.new(n)
-  (0..n-1).each{|i|
-    graph[i] = a[i - 1]
-  }
-
+  graph = a.dup
   visited = Array.new(n, false)
   stack = []
-  cycle = []
+  result = []
 
   (0..n-1).each{|start|
     next if visited[start]
-    stack.push([start, [start]])
+    stack.push(start)
 
     while !stack.empty?
-      v, path = stack.pop
-      visited[v] = true
-      next_v = graph[v]
+      v = stack.pop
 
       if visited[v]
-        cycle_start = path.index(next_v)
-        cycle = path[cycle_start..-1]
+        cycle_start = result.index(v)
+        result = result[cycle_start..-1]
         break
-      else
-        stack.push([next_v, path + [next_v]])
       end
-    end
 
-    break if !cycle.empty?
+      visited[v] = true
+      next_v = graph[v]
+      stack.push(next_v)
+      result.push(v)
+    end
   }
 
-  puts cycle.size
-  puts cycle.join(" ")
+  puts result.size
+  puts result.map{|v| v + 1}.join(' ')
 end
 
 main
