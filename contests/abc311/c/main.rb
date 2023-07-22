@@ -4,23 +4,34 @@ def main
   a = gets.chomp.split.map(&:to_i)
 
   graph = Array.new(n)
-  (0...n-1).each{|i|
+  (0..n-1).each{|i|
     graph[i] = a[i - 1]
   }
 
-  uf = UnionFind.new(n)
+  uf = UnionFind.new(n + 1)
 
-  # 有効閉路をノード一覧例を出力
-  m = uf.groups[1].size
-  # Bi+1 = ABi となるように、B1, B2, ..., BN を出力
-  ans = []
-  ans << node[uf.groups[1][m - 1]]
-  ans << uf.groups[1][0...-2].each{ |nd|
-    ans << node[nd]
+  cycle = []
+  (0..n-1).each{|i|
+    if uf.same?(i, graph[i])
+      cycle_start = i
+      cycle_end = graph[i]
+      break
+    else
+      uf.merge(i, graph[i])
+    end
   }
 
-  puts m
-  puts ans.join(" ")
+  unless cycle_start.nil?
+    current = cycle_start
+    while current != cycle_end
+      cycle << current
+      current = graph[current]
+    end
+  end
+
+  puts cycle.size
+  puts cycle.join(" ")
+
 end
 
 # ---------------------------------------------------
