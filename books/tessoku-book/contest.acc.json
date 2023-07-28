@@ -119,13 +119,23 @@
       "id": "tessoku_book_k",
       "label": "A11",
       "title": "Binary Search 1",
-      "url": "https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_k"
+      "url": "https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_k",
+      "directory": {
+        "path": "a11",
+        "testdir": "tests",
+        "submit": "main.rb"
+      }
     },
     {
       "id": "tessoku_book_l",
       "label": "A12",
       "title": "Printer",
-      "url": "https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_l"
+      "url": "https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_l",
+      "directory": {
+        "path": "a12",
+        "testdir": "tests",
+        "submit": "main.rb"
+      }
     },
     {
       "id": "tessoku_book_m",
@@ -413,7 +423,12 @@
       "id": "math_and_algorithm_am",
       "label": "A62",
       "title": "Depth First Search",
-      "url": "https://atcoder.jp/contests/tessoku-book/tasks/math_and_algorithm_am"
+      "url": "https://atcoder.jp/contests/tessoku-book/tasks/math_and_algorithm_am",
+      "directory": {
+        "path": "a62",
+        "testdir": "tests",
+        "submit": "main.rb"
+      }
     },
     {
       "id": "math_and_algorithm_an",
