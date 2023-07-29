@@ -1,21 +1,26 @@
 #!/usr/bin/env ruby
 def main
   n, m = gets.chomp.split.map(&:to_i)
-  a = gets.chomp.split.map(&:to_i)
-  b = gets.chomp.split.map(&:to_i)
+  sellers = gets.chomp.split.map(&:to_i)
+  buyers = gets.chomp.split.map(&:to_i)
 
-  # Aの売り手が、ちょうどBの買い手より大きくなる時の最小値を求める
+  sellers.sort!
+  buyers.sort!
 
-  # a, bの各要素の差を取った配列を作成
-  diff = a.zip(b).map { |a, b| a - b }
-  # diffが最小値になった時の組み合わせとなったbのindexを全て取得
-  min_diff_index = diff.each_index.select { |i| diff[i] == diff.min }
-  # min_diff_indexの中で、bの値が最大のものを取得
-  max_b_index = min_diff_index.max_by { |i| b[i] }
-  # max_b_indexの時のAの値で条件分岐
+  prices = []
   
 
+  selllers_uniq.each_index do |price, i|
+    # priceで売れる売り手の人数を求める
+    seller_num = sellers.count { |seller| price >= seller }
+    # priceの買い手の人数を求める
+    buyer_num = buyers.count { |buyer| buyer >= price }
+    # priceで売れる売り手の人数が、priceの買い手の人数以上である場合、priceをcountsに追加する
+    prices << price if seller_num >= buyer_num
+  end
 
+  # countsの最小値を出力する
+  puts prices.min
 end
 
 main
