@@ -1,17 +1,11 @@
 #!/usr/bin/env ruby
 def main
-  n, m = gets.chomp.split.map(&:to_i)
-end
+  s = gets.chomp.chars
 
-# ---------------------------------------------------
-# 以下、自前ライブラリ
-class Array
-  # ref. https://stackoverflow.com/questions/1475808/cumulative-array-sum-in-ruby
-  def cumulative_sum
-    sum = 0
-    self.map{|x| sum += x}.unshift(0) # 頭に0を追加しておく
-  end
+  # ランレングス圧縮
+  grouped = s.chars.slice_when{ |e, c| e != c }.map{ |e| [e[0].to_i, e.size] }
+
+  
 end
 
 main
-

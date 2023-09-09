@@ -4,23 +4,26 @@ def main
   sellers = gets.chomp.split.map(&:to_i)
   buyers = gets.chomp.split.map(&:to_i)
 
-  sellers.sort!
-  buyers.sort!
+  seller_count = sellers.tally.sort_by { |k, v| k }
+  buyer_count = buyers.tally.sort_by { |k, v| k }
 
-  prices = []
-  
+  left = seller_count[0][0]
+  right = buyer_count[-1][0]
 
-  selllers_uniq.each_index do |price, i|
-    # priceで売れる売り手の人数を求める
-    seller_num = sellers.count { |seller| price >= seller }
-    # priceの買い手の人数を求める
-    buyer_num = buyers.count { |buyer| buyer >= price }
-    # priceで売れる売り手の人数が、priceの買い手の人数以上である場合、priceをcountsに追加する
-    prices << price if seller_num >= buyer_num
+  while left < right
+    mid = (left + right) / 2
+    # midで売れる売り手の人数を求める
+    seller_num = seller_count.select { |k, v| k <= mid }.values.sum
+    # midで買える買い手の人数を求める
+    buyer_num = buyer_count.select { |k, v| k >= mid }.values.sum
+    if seller_num >= buyer_num
+      right = mid
+    else
+      left = mid + 1
+    end
+
+    puts left
   end
-
-  # countsの最小値を出力する
-  puts prices.min
 end
 
 main
