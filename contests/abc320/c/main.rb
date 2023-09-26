@@ -3,7 +3,7 @@ def main
   m = gets.chomp.to_i
   s = Array.new(3) { gets.chomp.split("").map(&:to_i) }
 
-  left_rail = = s[0]
+  left_rail = s[0]
   middle_rail = s[1]
   right_rail = s[2]
 
@@ -24,20 +24,36 @@ def main
   end
 
   # 共通する文字の座標に揃えられるか調べる
+  all_times = []
   common_nums.each do |num|
     # 共通する文字の座標を全て取得
-    right = right_rail.find_indexes(num), middle_rail.find_indexes(num), left_rail.find_indexes(num)
+    right = right_rail.find_indexes(num)
 
     # スロットを回し始める
     # スロットが回り始めてからt 秒後にi 番目のリールに対応するボタンを押すと、i 番目のリールはSi​の (tmodM)+1 文字目を表示して止まります。
     # この時に、各リールに共通する数字が存在する場合、全て同じ文字に揃えるための最小の秒数を求める
     right.each do |r|
-      middle.each do |m|
-        left.each do |l|
+      # rに止めるまでに回転している
+      middle_rail.rotate!(r)
+      left_rail.rotate!(r)
+      # 先のインデックスで共通する文字の座標を取得
+      middle = middle_rail.find_indexes(num).reject { |i| i < r }
+      # 真ん中を止めるのにかかった秒数
+      middle_time = middle - r
+      # その分回転
+      left_rail.rotate!(middle_time)
+      # 左のインデックスで共通する文字の座標を取得
+      left = left_rail.find_indexes(num).reject { |i| i < middle_time }
+      # 左を止めるのにかかった秒数
+      left_time = left - middle_time
 
-      end
+      # 全ての時間を足し合わせる
+      all_times << r + middle_time + left_time
     end
+  end
 
+  # 最小の秒数を出力
+  puts all_times.min
 end
 
 module ArrayExtension
@@ -47,5 +63,6 @@ module ArrayExtension
     end
   end
 end
+using(ArrayExtension)
 
 main
