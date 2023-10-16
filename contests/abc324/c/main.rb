@@ -2,32 +2,35 @@
 def main
   input = gets.chomp.split
   n = input[0].to_i
-  t = input[1].split("")
-  s = Array.new(n){ gets.chomp.split("") }
+  t = input[1].chars
+  s = Array.new(n){ gets.chomp.chars }
 
   ans = []
+  t_comp = t.sort.slice_when{ |e, c| e != c }.map{ |e| [e[0], e.size] }
+
   s.each_with_index do |si, i|
-    # サイズを比較
-    case si.size <=> t.size
-    # sが大きい場合
-    when 1
-      diff = si - t
-      ans << i if diff.size == 1 # tに一文字足して得られる
-    # tが大きい場合
-    when -1
-      diff = t - si
-      ans << i if diff.size == 1 # sに一文字足して得られる
-    # 等しい場合
-    when 0
-      ans << i if si == t # 文字列が等しい
-      diff = si - t
+    si_comp = si.sort.slice_when{ |e, c| e != c }.map{ |e| [e[0], e.size] }
+
+    if si_comp.size != t_comp.size
+      # サイズが異なる場合の処理
+      zipped = si_comp.zip(t_comp)
+      missmatch_chars = zipped.select{ |a, b| a != b }.map{ |a, b| a[0] }
+      if missmatch_chars.size == 1
+        # 差が1であるかの判定
+        if (si_comp.find{ |x| x[0] == missmatch_chars[0] }[1] - t_comp.find{ |x| x[0] == missmatch_chars[0] }[1]).abs == 1
+          ans << i
+        end
+      end
+    else
+      # サイズが等しい場合の処理
+      ans << i if si == t
+      diff = si_comp - t_comp
       ans << i if diff.size == 1
     end
   end
 
   puts ans.size
   puts ans.sort.map{ |i| i + 1 }.join(" ")
-
 end
 
 main
