@@ -1,17 +1,18 @@
 #!/usr/bin/env ruby
 def main
-  n, m = gets.chomp.split.map(&:to_i)
-end
+  d = gets.chomp.to_i
+  min = d
 
-# ---------------------------------------------------
-# 以下、自前ライブラリ
-class Array
-  # ref. https://stackoverflow.com/questions/1475808/cumulative-array-sum-in-ruby
-  def cumulative_sum
-    sum = 0
-    self.map{|x| sum += x}.unshift(0) # 頭に0を追加しておく
+  (0..Math.sqrt(d).to_i).each do |x|
+    y = Math.sqrt(d - x**2).to_i
+    min = [min, (d - x**2 - y**2).abs].min
+    if min == 0
+      puts min
+      exit
+    end
   end
+
+  puts min
 end
 
 main
-
