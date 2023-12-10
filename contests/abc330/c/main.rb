@@ -1,17 +1,11 @@
 #!/usr/bin/env ruby
 def main
   d = gets.chomp.to_i
-  min = Float::INFINITY
-  x = 0
+  min = d
 
-  while x**2 <= d
+  (0..Math.sqrt(d).to_i).each do |x|
     y = Math.sqrt(d - x**2).round
     min = [min, (d - x**2 - y**2).abs].min
-    if min == 0
-      puts min
-      exit
-    end
-    x += 1
   end
 
   puts min
