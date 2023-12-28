@@ -10,27 +10,15 @@ class Array
   end
 end
 
-# https://akhtikd.com/posts/2019-12-11/
-def lower_bound(arr, n)
-  ng = -1
-  ok = arr.size
-  while (ok - ng).abs > 1
-    mid = (ok + ng) / 2
-    if n <= arr[mid]
-      ok = mid
-    else
-      ng = mid
-    end
-  end
-  ok
-end
-
 culmulatives = R.sort.cumulative_sum
-pp culmulatives
 
 query.each do |q|
-  # ans = culmulatives.bsearch_index { |x| x <= q } || 0
-  ans = lower_bound(culmulatives, q)
+  index = culmulatives.bsearch_index { |x| x > q }
+  if index.nil?
+    ans = N
+  else
+    ans = index - 1
+  end
 
   puts ans
 end
